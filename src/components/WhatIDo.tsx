@@ -87,22 +87,22 @@ const WhatIDo = () => {
             <div className="what-corner"></div>
 
             <div className="what-content-in">
-              <h3>FRONTEND</h3>
-              <h4>Building Interactive UIs</h4>
+              <h3>EMBEDDED SYSTEMS</h3>
+              <h4>Hardware-Software Integration</h4>
               <p>
-                Crafting performant, responsive interfaces with modern frameworks.
-                From SPAs to micro-frontends, I deliver pixel-perfect experiences.
+                Designing and programming microcontroller-based systems. From sensor 
+                integration to real-time control, I build embedded solutions that work.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">React.js</div>
-                <div className="what-tags">Angular</div>
-                <div className="what-tags">Next.js</div>
-                <div className="what-tags">TypeScript</div>
-                <div className="what-tags">JavaScript</div>
-                <div className="what-tags">Material UI</div>
-                <div className="what-tags">HTML5</div>
-                <div className="what-tags">CSS3</div>
+                <div className="what-tags">Arduino</div>
+                <div className="what-tags">ESP32</div>
+                <div className="what-tags">Raspberry Pi</div>
+                <div className="what-tags">STM32</div>
+                <div className="what-tags">Embedded C</div>
+                <div className="what-tags">PlatformIO</div>
+                <div className="what-tags">Proteus</div>
+                <div className="what-tags">KiCad</div>
               </div>
               <div className="what-arrow"></div>
             </div>
@@ -126,22 +126,23 @@ const WhatIDo = () => {
             </div>
             <div className="what-corner"></div>
             <div className="what-content-in">
-              <h3>BACKEND</h3>
-              <h4>Scalable Server Architecture</h4>
+              <h3>IoT & AUTOMATION</h3>
+              <h4>Connected Smart Systems</h4>
               <p>
-                Designing robust APIs and microservices. From CMS platforms to
-                complex business logic, I build backends that scale.
+                Building IoT solutions with cloud integration and industrial automation 
+                using PLCs. From wireless communication to SCADA systems, I create 
+                intelligent connected devices.
               </p>
               <h5>Skillset & tools</h5>
               <div className="what-content-flex">
-                <div className="what-tags">Node.js</div>
-                <div className="what-tags">NestJS</div>
-                <div className="what-tags">Express.js</div>
-                <div className="what-tags">MongoDB</div>
-                <div className="what-tags">PostgreSQL</div>
-                <div className="what-tags">REST APIs</div>
-                <div className="what-tags">Microservices</div>
-                <div className="what-tags">Python</div>
+                <div className="what-tags">Firebase</div>
+                <div className="what-tags">ThingSpeak</div>
+                <div className="what-tags">MQTT</div>
+                <div className="what-tags">NRF24L01</div>
+                <div className="what-tags">PLC Programming</div>
+                <div className="what-tags">Ladder Logic</div>
+                <div className="what-tags">SCADA</div>
+                <div className="what-tags">HMI Design</div>
               </div>
               <div className="what-arrow"></div>
             </div>

@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import { useRef, useMemo, useState, useEffect } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment } from "@react-three/drei";
+import { Environment, Text } from "@react-three/drei";
 import { EffectComposer, N8AO } from "@react-three/postprocessing";
 import {
   BallCollider,
@@ -11,41 +11,47 @@ import {
   RapierRigidBody,
 } from "@react-three/rapier";
 
-const textureLoader = new THREE.TextureLoader();
-const imageUrls = [
-  "/images/react2.webp",
-  "/images/next2.webp",
-  "/images/node2.webp",
-  "/images/express.webp",
-  "/images/mongo.webp",
-  "/images/mysql.webp",
-  "/images/typescript.webp",
-  "/images/javascript.webp",
+const techNames = [
+  "C++",
+  "Python",
+  "C",
+  "HTML",
+  "CSS",
+  "Verilog",
+  "SystemVerilog",
+  "Arduino",
+  "ESP32",
+  "Raspberry Pi",
+  "STM32",
+  "Firebase",
+  "MATLAB",
+  "Simulink",
 ];
-const textures = imageUrls.map((url) => textureLoader.load(url));
 
-const sphereGeometry = new THREE.SphereGeometry(1, 28, 28);
+const sphereGeometry = new THREE.SphereGeometry(1, 20, 20);
 
-const spheres = [...Array(30)].map(() => ({
+const spheres = [...Array(20)].map(() => ({
   scale: [0.7, 1, 0.8, 1, 1][Math.floor(Math.random() * 5)],
+  techName: techNames[Math.floor(Math.random() * techNames.length)],
 }));
 
 type SphereProps = {
   vec?: THREE.Vector3;
   scale: number;
   r?: typeof THREE.MathUtils.randFloatSpread;
-  material: THREE.MeshPhysicalMaterial;
   isActive: boolean;
+  techName: string;
 };
 
 function SphereGeo({
   vec = new THREE.Vector3(),
   scale,
   r = THREE.MathUtils.randFloatSpread,
-  material,
   isActive,
+  techName,
 }: SphereProps) {
   const api = useRef<RapierRigidBody | null>(null);
+  const meshRef = useRef<THREE.Mesh>(null);
 
   useFrame((_state, delta) => {
     if (!isActive) return;
@@ -62,7 +68,23 @@ function SphereGeo({
       );
 
     api.current?.applyImpulse(impulse, true);
+    
+    // Make text always face camera
+    if (meshRef.current) {
+      meshRef.current.lookAt(0, 0, 20);
+    }
   });
+
+  const material = useMemo(
+    () =>
+      new THREE.MeshPhysicalMaterial({
+        color: "#ffffff",
+        metalness: 0.5,
+        roughness: 0.5,
+        clearcoat: 0.3,
+      }),
+    []
+  );
 
   return (
     <RigidBody
@@ -80,13 +102,25 @@ function SphereGeo({
         args={[0.15 * scale, 0.275 * scale]}
       />
       <mesh
-        castShadow
-        receiveShadow
+        castShadow={false}
+        receiveShadow={false}
         scale={scale}
         geometry={sphereGeometry}
         material={material}
-        rotation={[0.3, 1, 1]}
-      />
+        ref={meshRef}
+      >
+        <Text
+          position={[0, 0, 1.01]}
+          fontSize={0.3 * scale}
+          color="#000000"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={1.8 * scale}
+          textAlign="center"
+        >
+          {techName}
+        </Text>
+      </mesh>
     </RigidBody>
   );
 }
@@ -151,41 +185,27 @@ const TechStack = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  const materials = useMemo(() => {
-    return textures.map(
-      (texture) =>
-        new THREE.MeshPhysicalMaterial({
-          map: texture,
-          emissive: "#ffffff",
-          emissiveMap: texture,
-          emissiveIntensity: 0.3,
-          metalness: 0.5,
-          roughness: 1,
-          clearcoat: 0.1,
-        })
-    );
-  }, []);
 
   return (
     <div className="techstack">
       <h2> My Techstack</h2>
 
       <Canvas
-        shadows
-        gl={{ alpha: true, stencil: false, depth: false, antialias: false }}
+        shadows={false}
+        gl={{ 
+          alpha: true, 
+          stencil: false, 
+          depth: false, 
+          antialias: false,
+          powerPreference: "high-performance"
+        }}
         camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
         onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
         className="tech-canvas"
+        dpr={[1, 1.5]}
+        performance={{ min: 0.5 }}
       >
         <ambientLight intensity={1} />
-        <spotLight
-          position={[20, 20, 25]}
-          penumbra={1}
-          angle={0.2}
-          color="white"
-          castShadow
-          shadow-mapSize={[512, 512]}
-        />
         <directionalLight position={[0, 5, -4]} intensity={2} />
         <Physics gravity={[0, 0, 0]}>
           <Pointer isActive={isActive} />
@@ -193,7 +213,6 @@ const TechStack = () => {
             <SphereGeo
               key={i}
               {...props}
-              material={materials[Math.floor(Math.random() * materials.length)]}
               isActive={isActive}
             />
           ))}
