@@ -9,15 +9,28 @@ const About = () => {
       const aboutSection = document.getElementById("about");
       if (aboutSection) {
         const rect = aboutSection.getBoundingClientRect();
-        const isInView = rect.top < window.innerHeight * 0.7 && rect.bottom > 0;
+        // Show only when the about section is in the viewport
+        const isInView = rect.top < window.innerHeight * 0.6 && rect.bottom > window.innerHeight * 0.2;
         setIsVisible(isInView);
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // Use requestAnimationFrame for smoother performance
+    let ticking = false;
+    const scrollListener = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          handleScroll();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+
+    window.addEventListener("scroll", scrollListener, { passive: true });
     handleScroll(); // Check initial state
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", scrollListener);
   }, []);
 
   return (
